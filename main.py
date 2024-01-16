@@ -3,10 +3,10 @@ import aircraft
 import simulation
 
 # Create an aircraft object
-avion = aircraft.Aircraft(1000, 0.5, 2, 0)
-avion.wing = aircraft.Wing(2, 20, 2, 0.1, 5)
-avion.horizontal_stab = aircraft.Horizontal_stab(5, 5, 1, 0.1, -1)
-avion.thrust = aircraft.Thrust(2000)
+avion = aircraft.Aircraft(1000, 0.5, 3, angle = 0)
+avion.wing = aircraft.Wing(3, 30, 3, 0.1, 5)
+avion.horizontal_stab = aircraft.Horizontal_stab(9, 5, 1, 0.1, -2)
+avion.thrust = aircraft.Thrust(100)
 
 # Create a simulation object
 sim = simulation.Simulation(avion, 100)

@@ -21,8 +21,17 @@ class Simulation:
         return result
 
     def neutral_point(self):
+        a = (self.aircraft.horizontal_stab.surface / self.aircraft.wing.surface) * self.aircraft.horizontal_stab.efficiency * self.aircraft.horizontal_stab.clalpha
+        xw_unit = self.aircraft.wing.posX / self.aircraft.wing.chord
+        xh_unit = self.aircraft.horizontal_stab.posX / self.aircraft.horizontal_stab.chord
+        No_unit = xw_unit + (xh_unit - xw_unit) *(a / (self.aircraft.wing.clalpha + a))
+        return No_unit * self.aircraft.wing.chord
+
+"""     #####################  It doesn't work  #######################
+    def neutral_point(self):
         a = (self.aircraft.horizontal_stab.surface / self.aircraft.wing.surface) * self.aircraft.horizontal_stab.efficiency * self.aircraft.horizontal_stab.efficiency
         xw_unit = self.aircraft.wing.posX / self.aircraft.wing.chord
         xh_unit = self.aircraft.horizontal_stab.posX / self.aircraft.horizontal_stab.chord
         No_unit = (self.aircraft.wing.clalpha*xw_unit + a*xh_unit) / (self.aircraft.wing.clalpha + a)
         return No_unit * self.aircraft.wing.chord
+"""
