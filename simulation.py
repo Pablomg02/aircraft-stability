@@ -20,18 +20,40 @@ class Simulation:
         result = self.lift_wing() + self.lift_stab()
         return result
 
+
     def neutral_point(self):
+        # downwash angle is not considered. It has to be added in the future
+        xw_unit = self.aircraft.wing.posX / self.aircraft.wing.chord
+        xh_unit = self.aircraft.horizontal_stab.posX / self.aircraft.horizontal_stab.chord
+        xcg_unit = self.aircraft.cgX / self.aircraft.wing.chord
+        volume_tail = self.aircraft.horizontal_stab.surface * (xh_unit - xw_unit) / (self.aircraft.wing.chord * self.aircraft.wing.surface)
+        No_unit = xw_unit + (self.aircraft.horizontal_stab.clalpha / self.aircraft.wing.clalpha) * volume_tail * self.aircraft.horizontal_stab.efficiency
+        return No_unit * self.aircraft.wing.chord
+
+
+
+    """def neutral_point(self):
+        # downwash angle is not considered. It has to be added in the future
         a = (self.aircraft.horizontal_stab.surface / self.aircraft.wing.surface) * self.aircraft.horizontal_stab.efficiency * self.aircraft.horizontal_stab.clalpha
         xw_unit = self.aircraft.wing.posX / self.aircraft.wing.chord
         xh_unit = self.aircraft.horizontal_stab.posX / self.aircraft.horizontal_stab.chord
         No_unit = xw_unit + (xh_unit - xw_unit) *(a / (self.aircraft.wing.clalpha + a))
-        return No_unit * self.aircraft.wing.chord
+        return No_unit * self.aircraft.wing.chord"""
+    
+    def trim(self):
+        # downwash angle is not considered. It has to be added in the future
+        # Trim needed to fly straight and level at angle self.aircaft.angle 
 
-"""     #####################  It doesn't work  #######################
-    def neutral_point(self):
-        a = (self.aircraft.horizontal_stab.surface / self.aircraft.wing.surface) * self.aircraft.horizontal_stab.efficiency * self.aircraft.horizontal_stab.efficiency
         xw_unit = self.aircraft.wing.posX / self.aircraft.wing.chord
         xh_unit = self.aircraft.horizontal_stab.posX / self.aircraft.horizontal_stab.chord
-        No_unit = (self.aircraft.wing.clalpha*xw_unit + a*xh_unit) / (self.aircraft.wing.clalpha + a)
-        return No_unit * self.aircraft.wing.chord
-"""
+        xcg_unit = self.aircraft.cgX / self.aircraft.wing.chord
+
+        #Cm0 Cmacwb - at * performance tail * volume tail * (it - iwb - epsilon0(=0))
+        volume_tail = self.aircraft.horizontal_stab.surface * (xh_unit - xw_unit) / (self.aircraft.wing.chord * self.aircraft.wing.surface)
+        cm0 = self.aircraft.wing.cm0 - self.aircraft.horizontal_stab.clalpha * volume_tail * self.aircraft.horizontal_stab.efficiency * (self.aircraft.horizontal_stab.it)
+
+        cmalpha = self.aircraft.wing.clalpha * (xcg_unit - xw_unit) - (self.aircraft.horizontal_stab.clalpha * volume_tail * self.aircraft.horizontal_stab.efficiency)
+        cmdelta = - self.aircraft.horizontal_stab.clalpha * self.aircraft.horizontal_stab.efficiency * self.aircraft.horizontal_stab.control_surface * volume_tail
+        trim = - (cm0/cmdelta) - ((cmalpha/cmdelta) * self.aircraft.angle)
+        return cm0, cmalpha, cmdelta, trim
+        #return(- (cm0/cmdelta) - (cmalpha/cmdelta) * self.aircraft.angle)

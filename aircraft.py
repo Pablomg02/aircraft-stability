@@ -24,7 +24,7 @@ class Wing:
 
 
 class Horizontal_stab():
-    def __init__(self, posX, surface, chord, clalpha, it, cd = 0, cm0 = 0, posY = 0, efficiency = 1):
+    def __init__(self, posX, surface, chord, clalpha, it, cd = 0, cm0 = 0, posY = 0, efficiency = 1, control_surface = 1):
         self.posX = posX # Distance from 0 to the stabilizer's aerodynamic center [m]
         self.posY = posY # Distance from fusselage line to the stabilizer's aerodynamic center [m]
         self.surface = surface # Area of the stabilizer [m^2]
@@ -34,6 +34,7 @@ class Horizontal_stab():
         self.cm0 = cm0 # Moment coefficient at 0 AoA in the aerodynamic center 
         self.efficiency = efficiency # Efficiency of the stabilizer
         self.it = it # Angle of the stabilizer's NSL with respect to the fuselage line [degrees]
+        self.control_surface = control_surface # Control of the stabilizer, being 1 everything and 0 nothing
 
 class Thrust():
     def __init__(self, thrust, posY = 0):
