@@ -11,8 +11,8 @@ avion.thrust = aircraft.Thrust(100)
 # Create a simulation object
 sim = simulation.Simulation(avion, 236.5)
 
+
 # Print the results
 print(f"Neutral point: {sim.neutral_point()}")
 print(f"Trim: {sim.trim()}")
 
-# :D
